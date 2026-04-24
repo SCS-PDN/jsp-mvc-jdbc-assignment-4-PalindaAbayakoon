@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Optional external JDBC properties (if present on classpath) -->
+    <context:property-placeholder
+            location="classpath:jdbc.properties"
+            ignore-resource-not-found="true"/>
+
+    <!-- JDBC configuration via environment variables with local defaults -->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${DB_DRIVER:com.mysql.cj.jdbc.Driver}"/>
+        <property name="url" value="${DB_URL:jdbc:mysql://localhost:3306/university_db?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true}"/>
+        <property name="username" value="${DB_USERNAME:root}"/>
+        <property name="password" value="${DB_PASSWORD:root}"/>
+    </bean>
+
+    <!-- JdbcTemplate: used by all DAO classes -->
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>
